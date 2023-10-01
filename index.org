@@ -1,0 +1,70 @@
+#+SETUPFILE: ./simple_inline.theme
+#+TITLE: Music Theory Notes
+#+AUTHOR: Asayake
+#+OPTIONS: ^:nil p:t
+#+PROPERTY: header-args:  :noweb yes
+
+#+name: pre
+#+begin_src lilypond :exports none
+% https://lilypond.org/doc/v2.24/Documentation/notation/midi-instruments
+\version "2.24.2"
+\score {
+  <<
+    \new ChordNames {
+      \set chordChanges = ##t
+ \chordmode {c1:m7 c2 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 c1:m7 }
+    }
+\new Staff \with {midiInstrument = "gunshot"}{
+#+end_src
+
+#+name: post
+#+begin_src lilypond :exports none
+}
+>>
+\midi {}
+\layout {}
+}
+#+end_src
+
+#+NAME: gen_mp3
+#+BEGIN_SRC sh :var data="" :var file="" :results output :exports none
+  echo "$data"
+  timidity "$file".midi -Ow -o - | ffmpeg -i - -y -acodec libmp3lame "$file".mp3
+  echo "[[audio:$file.mp3]]"
+#+END_SRC
+
+* Introduction
+** About / Disclaimer
+I have no idea what I'm talking about. I'm writing this as I learn as a personal textbook of sorts, as rephrasing information is one of the best ways to find gaps of knowledge. So please take everything you read here with nanograins of salt. My hope in writing this is mainly to one day remove this disclaimer, and keep myself accountable/disciplined. Also to flex my automatic accompanying audio from MIDI, maybe.
+
+Aside from that, be ready for breaking permalinks, information removed or moved around suddenly as I find an organization system which makes more sense to me, I make no guarantees on things not changing as I learn new information. More technical knowhow owners may look at the git history to hopefully find the old information they are looking for if the need does arise.
+
+This is best considered as a "glossary", and certainly not as a good entry point to start learning theory, especially as I'll skip a lot of introductionary things.
+
+License is [[https://creativecommons.org/licenses/by-nc/4.0/][CC BY-NC]] if you keep in mind the paragraphs above.
+
+** Adjacent Links
+- Drills
+- Individual Book Notes
+
+
+#+begin_src lilypond :file test.png :noweb yes :post gen_mp3(*this*, "test") :results drawer
+<<pre>>
+\relative c' {
+  g a b c
+  d e f g
+  f e d c
+  b a g a
+  b c d e
+  f g f e
+  d c b a
+  g1
+}
+<<post>>
+#+end_src
+
+#+RESULTS:
+:results:
+[[file:test.png]]
+[[audio:test.mp3]]
+:end:
